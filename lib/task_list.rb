@@ -1,4 +1,4 @@
-require_relative 'task'
+# frozen_string_literal: true
 
 class TaskList
   QUIT = 'quit'
@@ -7,7 +7,7 @@ class TaskList
     @input = input
     @output = output
 
-    @tasks = {}
+    @tasks = Tasks.new
   end
 
   def run
@@ -22,7 +22,7 @@ class TaskList
     end
   end
 
-private
+  private
 
   def execute(command_line)
     command, rest = command_line.split(/ /, 2)
@@ -32,9 +32,9 @@ private
     when 'add'
       add rest
     when 'check'
-      check rest
+      @tasks.find_task_by_id(rest).set_check!
     when 'uncheck'
-      uncheck rest
+      @tasks.find_task_by_id(rest).set_uncheck!
     when 'help'
       help
     else
@@ -43,7 +43,7 @@ private
   end
 
   def show
-    @tasks.each do |project_name, project_tasks|
+    @tasks.show do |project_name, project_tasks|
       @output.puts project_name
       project_tasks.each do |task|
         @output.printf("  [%c] %d: %s\n", (task.done? ? 'x' : ' '), task.id, task.description)
@@ -55,46 +55,11 @@ private
   def add(command_line)
     subcommand, rest = command_line.split(/ /, 2)
     if subcommand == 'project'
-      add_project rest
+      @tasks.add_project(rest)
     elsif subcommand == 'task'
-      project, description = rest.split(/ /, 2)
-      add_task project, description
+      project_name, description = rest.split(/ /, 2)
+      @tasks.add_project_task(project_name, description)
     end
-  end
-
-  def add_project(name)
-    @tasks[name] = []
-  end
-
-  def add_task(project, description)
-    project_tasks = @tasks[project]
-    if project_tasks.nil?
-      @output.printf("Could not find a project with the name \"%s\".\n", project)
-      return
-    end
-    project_tasks << Task.new(next_id, description, false)
-  end
-
-  def check(id_string)
-    set_done(id_string, true)
-  end
-
-  def uncheck(id_string)
-    set_done(id_string, false)
-  end
-
-  def set_done(id_string, done)
-    id = id_string.to_i
-    task = @tasks.collect { |project_name, project_tasks|
-      project_tasks.find { |t| t.id == id }
-    }.reject(&:nil?).first
-
-    if task.nil?
-      @output.printf("Could not find a task with an ID of %d.\n", id)
-      return
-    end
-
-    task.done = done
   end
 
   def help
@@ -109,12 +74,6 @@ private
 
   def error(command)
     @output.printf("I don't know what the command \"%s\" is.\n", command)
-  end
-
-  def next_id
-    @last_id ||= 0
-    @last_id += 1
-    @last_id
   end
 end
 

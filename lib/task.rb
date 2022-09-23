@@ -11,4 +11,12 @@ class Task
   def done?
     done
   end
+
+  def set_check!
+    @done = true
+  end
+
+  def set_uncheck!
+    @done = false
+  end
 end
