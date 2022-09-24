@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require_relative 'tasks'
 
 class TaskList
   QUIT = 'quit'
@@ -43,13 +44,15 @@ class TaskList
   end
 
   def show
-    @tasks.show do |project_name, project_tasks|
-      @output.puts project_name
-      project_tasks.each do |task|
-        @output.printf("  [%c] %d: %s\n", (task.done? ? 'x' : ' '), task.id, task.description)
-      end
-      @output.puts
+    @tasks.show(&method(:show_project_task))
+  end
+
+  def show_project_task(project_name, project_tasks)
+    @output.puts project_name
+    project_tasks.each do |task|
+      @output.printf("  [%c] %d: %s\n", (task.done? ? 'x' : ' '), task.id, task.description)
     end
+    @output.puts
   end
 
   def add(command_line)
@@ -58,7 +61,12 @@ class TaskList
       @tasks.add_project(rest)
     elsif subcommand == 'task'
       project_name, description = rest.split(/ /, 2)
-      @tasks.add_project_task(project_name, description)
+      begin
+        @tasks.add_project_task(project_name, description)
+      rescue
+        @output.printf("Could not find a project with the name \"%s\".\n", project_name)
+        @output.puts
+      end
     end
   end
 

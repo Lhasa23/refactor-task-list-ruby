@@ -52,6 +52,10 @@ describe 'application' do
       execute('add project training')
       execute('add task training Four Elements of Simple Design')
       execute('add task training SOLID')
+
+      execute('add task training1 SOLID')
+      read_lines('Could not find a project with the name "training1".', '')
+
       execute('add task training Coupling and Cohesion')
       execute('add task training Primitive Obsession')
       execute('add task training Outside-In TDD')

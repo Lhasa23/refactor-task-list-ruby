@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+require_relative 'task'
 
 class Tasks
-  def initialize(tasks = {})
-    @tasks = tasks
+  def initialize
+    @tasks = {}
   end
 
   def show
@@ -18,7 +19,7 @@ class Tasks
   def add_project_task(project_name, description)
     project_tasks = @tasks[project_name]
     if project_tasks.nil?
-      @output.printf("Could not find a project with the name \"%s\".\n", project)
+      raise 'Project tasks not existed'
       return
     end
     @tasks[project_name] << Task.new(next_id, description, false)
