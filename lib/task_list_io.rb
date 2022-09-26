@@ -13,7 +13,8 @@ class TaskListIO
     @input.readline.strip
   end
 
-  def print(message = '')
+  def print(message)
+    return if message.empty?
     @output.puts message
     @output.puts
   end

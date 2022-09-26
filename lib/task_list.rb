@@ -58,11 +58,7 @@ class TaskList
   end
 
   def show
-    @tasks.show(&method(:show_project_task))
-  end
-
-  def show_project_task(project_name, project_tasks)
-    @io.print project_tasks.reduce([project_name]) { |result, task| result << "  [#{task.status}] #{task.id}: #{task.description}" }.join("\n")
+    @io.print @tasks.show
   end
 
   def add(command_line)

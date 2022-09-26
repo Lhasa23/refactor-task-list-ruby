@@ -7,9 +7,11 @@ class Tasks
   end
 
   def show
+    show_arr = []
     @tasks.each do |project_name, project_tasks|
-      yield(project_name, project_tasks)
+      show_arr << project_tasks.reduce([project_name]) { |result, task| result << "  [#{task.status}] #{task.id}: #{task.description}" }.join("\n")
     end
+    show_arr.join("\n\n")
   end
 
   def add_project(name)
