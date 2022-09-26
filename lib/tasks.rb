@@ -20,7 +20,6 @@ class Tasks
     project_tasks = @tasks[project_name]
     if project_tasks.nil?
       raise 'Project tasks not existed'
-      return
     end
     @tasks[project_name] << Task.new(next_id, description, false)
   end

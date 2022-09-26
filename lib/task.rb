@@ -10,15 +10,15 @@ class Task
     @done = done
   end
 
-  def done?
-    done
+  def status
+    done ? 'x' : ' '
   end
 
-  def set_check!
+  def check!
     @done = true
   end
 
-  def set_uncheck!
+  def uncheck!
     @done = false
   end
 end
