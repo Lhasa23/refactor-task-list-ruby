@@ -4,8 +4,8 @@ class TaskListIO
     @output = io[:output]
   end
 
-  def init
-    @output.print('> ')
+  def prompt
+    @output.write('> ')
     @output.flush
   end
 
@@ -13,7 +13,7 @@ class TaskListIO
     @input.readline.strip
   end
 
-  def print(message)
+  def write(message)
     return if message.empty?
     @output.puts message
     @output.puts

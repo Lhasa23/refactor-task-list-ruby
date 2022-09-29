@@ -1,17 +1,10 @@
 # frozen_string_literal: true
 require_relative 'tasks'
 require_relative 'task_list_io'
+require_relative 'command'
 
 class TaskList
   QUIT = 'quit'
-  HELP = [
-    'Commands:',
-    '  show',
-    '  add project <project name>',
-    '  add task <project name> <task description>',
-    '  check <task ID>',
-    '  uncheck <task ID>'
-  ]
 
   def initialize(input = $stdin, output = $stdout)
     @io = TaskListIO.new(input: input, output: output)
@@ -20,7 +13,7 @@ class TaskList
 
   def run
     while true
-      @io.init
+      @io.prompt
 
       command = @io.read
       break if command == QUIT
@@ -32,55 +25,7 @@ class TaskList
   private
 
   def execute(command_line)
-    command, args = command_line.split(/ /, 2)
-    case command
-    when 'show'
-      show
-    when 'add'
-      add args
-    when 'check'
-      check(args)
-    when 'uncheck'
-      uncheck(args)
-    when 'help'
-      help
-    else
-      error command
-    end
-  end
-
-  def uncheck(args)
-    @tasks.find_task_by_id(args).uncheck!
-  end
-
-  def check(args)
-    @tasks.find_task_by_id(args).check!
-  end
-
-  def show
-    @io.print @tasks.show
-  end
-
-  def add(command_line)
-    subcommand, rest = command_line.split(/ /, 2)
-    if subcommand == 'project'
-      @tasks.add_project(rest)
-    elsif subcommand == 'task'
-      project_name, description = rest.split(/ /, 2)
-      begin
-        @tasks.add_project_task(project_name, description)
-      rescue
-        @io.print("Could not find a project with the name \"#{project_name}\".\n")
-      end
-    end
-  end
-
-  def help
-    @io.print HELP.join("\n")
-  end
-
-  def error(command)
-    @io.print("I don't know what the command \"#{command}\" is.\n")
+    command_factory(command_line).run(@tasks, @io)
   end
 end
 
