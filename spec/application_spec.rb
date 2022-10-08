@@ -68,19 +68,32 @@ describe 'application' do
 
       execute('show')
       read_lines(
-          'secrets',
-          '  [x] 1: Eat more donuts.',
-          '  [ ] 2: Destroy all humans.',
-          '',
-          'training',
-          '  [x] 3: Four Elements of Simple Design',
-          '  [ ] 4: SOLID',
-          '  [x] 5: Coupling and Cohesion',
-          '  [x] 6: Primitive Obsession',
-          '  [ ] 7: Outside-In TDD',
-          '  [ ] 8: Interaction-Driven Design',
-          ''
+        'secrets',
+        '  [x] 1: Eat more donuts.',
+        '  [ ] 2: Destroy all humans.',
+        '',
+        'training',
+        '  [x] 3: Four Elements of Simple Design',
+        '  [ ] 4: SOLID',
+        '  [x] 5: Coupling and Cohesion',
+        '  [x] 6: Primitive Obsession',
+        '  [ ] 7: Outside-In TDD',
+        '  [ ] 8: Interaction-Driven Design',
+        ''
       )
+
+      execute('quit')
+    end
+  end
+
+  it 'deadlines' do
+    Timeout::timeout 1 do
+      execute('add project secrets')
+      execute('add task secrets Eat more donuts.')
+      execute('add task secrets Destroy all humans.')
+
+      execute('deadline 1 2022-10-10')
+      read_lines('[ ] 1: Eat more donuts. 2022-10-10', '')
 
       execute('quit')
     end

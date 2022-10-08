@@ -34,7 +34,6 @@ class Tasks
 
     if task.nil?
       raise 'Task not exist'
-      @output.printf("Could not find a task with an ID of %d.\n", id)
       return
     end
 

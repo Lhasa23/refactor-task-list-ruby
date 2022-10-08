@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative 'tasks'
 require_relative 'task_list_io'
-require_relative 'command'
+require_relative 'factory'
 
 class TaskList
   QUIT = 'quit'
@@ -18,14 +18,8 @@ class TaskList
       command = @io.read
       break if command == QUIT
 
-      execute(command)
+      command_factory(command).run(@tasks, @io)
     end
-  end
-
-  private
-
-  def execute(command_line)
-    command_factory(command_line).run(@tasks, @io)
   end
 end
 

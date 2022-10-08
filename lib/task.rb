@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'date'
 
 class Task
   attr_reader :id, :description
@@ -8,6 +9,11 @@ class Task
     @id = id
     @description = description
     @done = done
+    @deadline = ''
+  end
+
+  def deadline
+    @deadline.strftime("%Y-%m-%d")
   end
 
   def status
@@ -20,5 +26,9 @@ class Task
 
   def uncheck!
     @done = false
+  end
+
+  def deadline!(date)
+    @deadline = Date.parse(date)
   end
 end
