@@ -91,9 +91,19 @@ describe 'application' do
       execute('add project secrets')
       execute('add task secrets Eat more donuts.')
       execute('add task secrets Destroy all humans.')
+      execute('add task secrets Destroy all plants.')
+      execute('add task secrets Kill Dach.')
 
       execute('deadline 1 2022-10-10')
-      read_lines('[ ] 1: Eat more donuts. 2022-10-10', '')
+      execute('deadline 3 2022-10-09')
+      execute('deadline 4 2022-10-09')
+
+      execute('today')
+      read_lines(
+        '[ ] 3: Destroy all plants.',
+        '[ ] 4: Kill Dach.',
+        ''
+      )
 
       execute('quit')
     end

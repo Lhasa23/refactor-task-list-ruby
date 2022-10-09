@@ -9,7 +9,7 @@ class Task
     @id = id
     @description = description
     @done = done
-    @deadline = ''
+    @deadline = Date.new(9999, 1, 1)
   end
 
   def deadline

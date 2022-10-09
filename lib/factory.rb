@@ -3,6 +3,7 @@ require_relative 'add_command'
 require_relative 'none_command'
 require_relative 'checking_command'
 require_relative 'show_command'
+require_relative 'today_command'
 require_relative 'help_command'
 require_relative 'deadline_command'
 
@@ -19,6 +20,8 @@ def command_factory(input)
   case command
   when 'show'
     return ShowCommand.new(input)
+  when 'today'
+    return TodayCommand.new(input)
   when 'add'
     return AddCommand.new(input)
   when 'help'

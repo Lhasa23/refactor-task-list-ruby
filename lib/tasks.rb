@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require_relative 'task'
+require 'date'
 
 class Tasks
   def initialize
@@ -28,16 +29,18 @@ class Tasks
 
   def find_task_by_id(id_string)
     id = id_string.to_i
-    task = @tasks.collect { |project_name, project_tasks|
+    @tasks.collect { |project_name, project_tasks|
       project_tasks.find { |t| t.id == id }
     }.reject(&:nil?).first
+  end
 
-    if task.nil?
-      raise 'Task not exist'
-      return
+  def find_task_by_date(date = Date.today.strftime("%Y-%m-%d"))
+    task = []
+    @tasks.each do |project_name, project_tasks|
+      task << project_tasks.select { |t| t.deadline == date }
     end
 
-    task
+    task.flatten
   end
 
   private

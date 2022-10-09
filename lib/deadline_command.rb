@@ -19,7 +19,5 @@ class DeadlineCommand < Command
     end
 
     task.deadline!(date)
-    io.write("[#{task.status}] #{task.id}: #{task.description} #{task.deadline}")
-
   end
 end
