@@ -7,19 +7,11 @@ class TaskList
   QUIT = 'quit'
 
   def initialize(input = $stdin, output = $stdout)
-    @io = TaskListIO.new(input: input, output: output)
-    @tasks = Tasks.new
+    @terminal = CommandFactory.new(TaskListIO.new(input: input, output: output), Tasks.new)
   end
 
   def run
-    while true
-      @io.prompt
-
-      command = @io.read
-      break if command == QUIT
-
-      command_factory(command).run(@tasks, @io)
-    end
+    @terminal.listen
   end
 end
 

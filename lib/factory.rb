@@ -7,29 +7,52 @@ require_relative 'today_command'
 require_relative 'help_command'
 require_relative 'deadline_command'
 
-def command_factory(input)
-  command = input.split(/ /).first
-  if command.nil?
-    return NoneCommand.new('')
+class CommandFactory
+  def initialize(io, tasks)
+    @io = io
+    @tasks = tasks
   end
 
-  if command.include? 'check'
-    return CheckingCommand.new(input)
+  def listen
+    while true
+      @io.prompt
+
+      terminal = create(@io.read)
+      break unless terminal
+
+      terminal.run(@tasks, @io)
+    end
   end
 
-  case command
-  when 'show'
-    return ShowCommand.new(input)
-  when 'today'
-    return TodayCommand.new(input)
-  when 'add'
-    return AddCommand.new(input)
-  when 'help'
-    return HelpCommand.new(input)
-  when 'deadline'
-    return DeadlineCommand.new(input)
-  else
-    return NoneCommand.new(input)
+  private
+
+  def create(input)
+    command = input.split(/ /).first
+
+    return false if command == 'quit'
+
+    if command.nil?
+      return NoneCommand.new('')
+    end
+
+    if command.include? 'check'
+      return CheckingCommand.new(input)
+    end
+
+    case command
+    when 'show'
+      return ShowCommand.new(input)
+    when 'today'
+      return TodayCommand.new(input)
+    when 'add'
+      return AddCommand.new(input)
+    when 'help'
+      return HelpCommand.new(input)
+    when 'deadline'
+      return DeadlineCommand.new(input)
+    else
+      return NoneCommand.new(input)
+    end
   end
+
 end
-

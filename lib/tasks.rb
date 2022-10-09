@@ -15,11 +15,11 @@ class Tasks
     show_arr.join("\n\n")
   end
 
-  def add_project(name)
+  def add_project!(name)
     @tasks[name] = []
   end
 
-  def add_project_task(project_name, description)
+  def add_project_task!(project_name, description)
     project_tasks = @tasks[project_name]
     if project_tasks.nil?
       raise 'Project tasks not existed'
