@@ -31,4 +31,8 @@ class Task
   def deadline!(date)
     @deadline = Date.parse(date)
   end
+
+  def amend_id(new_id)
+    @id = new_id
+  end
 end

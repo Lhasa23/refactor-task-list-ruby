@@ -5,6 +5,7 @@ require_relative 'checking_command'
 require_relative 'show_command'
 require_relative 'today_command'
 require_relative 'help_command'
+require_relative 'amend_command'
 require_relative 'deadline_command'
 
 class CommandFactory
@@ -48,6 +49,8 @@ class CommandFactory
       return AddCommand.new(input)
     when 'help'
       return HelpCommand.new(input)
+    when 'amend'
+      return AmendCommand.new(input)
     when 'deadline'
       return DeadlineCommand.new(input)
     else

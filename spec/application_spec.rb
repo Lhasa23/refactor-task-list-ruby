@@ -94,9 +94,10 @@ describe 'application' do
       execute('add task secrets Destroy all plants.')
       execute('add task secrets Kill Dach.')
 
-      execute('deadline 1 2022-10-10')
-      execute('deadline 3 2022-10-09')
-      execute('deadline 4 2022-10-09')
+      date = Date.today.strftime("%Y-%m-%d")
+      execute('deadline 1 2022-10-08')
+      execute("deadline 3 #{date}")
+      execute("deadline 4 #{date}")
 
       execute('today')
       read_lines(
@@ -104,6 +105,27 @@ describe 'application' do
         '[ ] 4: Kill Dach.',
         ''
       )
+
+      execute('quit')
+    end
+  end
+
+  it 'amend id' do
+    Timeout::timeout 1 do
+      execute('add project secrets')
+      execute('add task secrets Eat more donuts.')
+      execute('add task secrets Destroy all humans.')
+      execute('add task secrets Destroy all plants.')
+      execute('add task secrets Kill Dach.')
+
+      execute('amend id 1 first')
+      read_lines("[ ] first: Eat more donuts.", '')
+
+      execute("amend id 2 3")
+      read_lines("Can't use exist id!", '')
+
+      execute("amend id 2 f^")
+      read_lines("Can't use special characters!", '')
 
       execute('quit')
     end
