@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require_relative 'task'
-require 'date'
 
 class Tasks
   def initialize
@@ -10,7 +9,7 @@ class Tasks
   def show
     show_arr = []
     @tasks.each do |project_name, project_tasks|
-      show_arr << project_tasks.reduce([project_name]) { |result, task| result << "  [#{task.status}] #{task.id}: #{task.description}" }.join("\n")
+      show_arr << project_tasks.reduce([project_name]) { |result, task| result << "  #{task.task_item_string}" }.join("\n")
     end
     show_arr.join("\n\n")
   end

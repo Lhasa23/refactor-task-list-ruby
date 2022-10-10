@@ -9,7 +9,7 @@ class TodayCommand < Command
   def run(tasks, io)
     task = tasks.find_task_by_date
     output = ''
-    task.each { |item| output += "[#{item.status}] #{item.id}: #{item.description}\n" }
+    task.each { |item| output += "#{item.task_item_string}\n" }
     io.write(output)
   end
 end
