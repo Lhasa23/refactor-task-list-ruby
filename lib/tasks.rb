@@ -18,12 +18,12 @@ class Tasks
     @tasks[name] = []
   end
 
-  def add_project_task!(project_name, description)
+  def add_task!(project_name, description)
     project_tasks = @tasks[project_name]
     if project_tasks.nil?
       raise 'Project tasks not existed'
     end
-    @tasks[project_name] << Task.new(next_id, description, false)
+    @tasks[project_name] << Task.new(next_id, description, false, project_name)
   end
 
   def find_task_by_id(id_string)
@@ -34,12 +34,14 @@ class Tasks
   end
 
   def find_task_by_date(date = Date.today.strftime("%Y-%m-%d"))
-    task = []
-    @tasks.each do |project_name, project_tasks|
-      task << project_tasks.select { |t| t.deadline == date }
-    end
+    @tasks.map do |project_name, project_tasks|
+      project_tasks.select { |t| t.deadline == date }
+    end.reject(&:nil?).flatten
+  end
 
-    task.flatten
+  def delete_task_by_id(id_string)
+    task = find_task_by_id(id_string)
+    @tasks[task.project].delete task
   end
 
   private

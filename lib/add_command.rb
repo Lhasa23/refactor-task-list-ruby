@@ -14,7 +14,7 @@ class AddCommand < Command
     end
 
     begin
-      tasks.add_project_task!(project_name, description)
+      tasks.add_task!(project_name, description)
     rescue
       io.write("Could not find a project with the name \"#{project_name}\".\n")
     end

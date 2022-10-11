@@ -110,7 +110,7 @@ describe 'application' do
     end
   end
 
-  it 'amend id' do
+  it 'amend task id' do
     Timeout::timeout 1 do
       execute('add project secrets')
       execute('add task secrets Eat more donuts.')
@@ -126,6 +126,36 @@ describe 'application' do
 
       execute("amend id 2 f^")
       read_lines("Can't use special characters!", '')
+
+      execute('quit')
+    end
+  end
+
+  it 'delete task' do
+    Timeout::timeout 1 do
+      execute('add project secrets')
+      execute('add task secrets Eat more donuts.')
+      execute('add task secrets Destroy all humans.')
+      execute('show')
+      read_lines(
+        'secrets',
+        '  [ ] 1: Eat more donuts.',
+        '  [ ] 2: Destroy all humans.',
+        ''
+      )
+
+      execute('delete 1')
+      execute('show')
+      read_lines(
+        'secrets',
+        '  [ ] 2: Destroy all humans.',
+        ''
+      )
+      execute('delete 3')
+      read_lines(
+        "Could not find a task with an ID of 3.",
+        ''
+      )
 
       execute('quit')
     end

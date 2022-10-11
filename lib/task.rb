@@ -2,14 +2,15 @@
 require 'date'
 
 class Task
-  attr_reader :id, :description, :task_item_string
+  attr_reader :id, :description, :task_item_string, :project
   attr_accessor :done
 
-  def initialize(id, description, done)
+  def initialize(id, description, done, project)
     @id = id
     @description = description
     @done = done
     @deadline = Date.new(9999, 1, 1)
+    @project = project
   end
 
   def deadline

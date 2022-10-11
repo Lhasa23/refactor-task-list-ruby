@@ -7,6 +7,7 @@ require_relative 'today_command'
 require_relative 'help_command'
 require_relative 'amend_command'
 require_relative 'deadline_command'
+require_relative 'delete_command'
 
 class CommandFactory
   def initialize(io, tasks)
@@ -53,6 +54,8 @@ class CommandFactory
       return AmendCommand.new(input)
     when 'deadline'
       return DeadlineCommand.new(input)
+    when 'delete'
+      return DeleteCommand.new(input)
     else
       return NoneCommand.new(input)
     end
