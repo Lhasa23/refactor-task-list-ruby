@@ -2,7 +2,9 @@
 class Command
   HELP = [
     'Commands:',
-    '  show',
+    '  view [by] <option>',
+    '    option: project (default mode)',
+    '    option: deadline',
     '  add project <project name>',
     '  add task <project name> <task description>',
     '  check <task ID>',
@@ -10,7 +12,7 @@ class Command
     '  deadline <task ID> <date>',
     '  today',
     '  amend <option> <task ID> <new task ID>',
-    '    option: id'
+    '    option: id',
   ]
 
   def initialize(command)

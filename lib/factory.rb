@@ -2,7 +2,7 @@
 require_relative 'add_command'
 require_relative 'none_command'
 require_relative 'checking_command'
-require_relative 'show_command'
+require_relative 'view_command'
 require_relative 'today_command'
 require_relative 'help_command'
 require_relative 'amend_command'
@@ -42,8 +42,8 @@ class CommandFactory
     end
 
     case command
-    when 'show'
-      return ShowCommand.new(input)
+    when 'view'
+      return ViewCommand.new(input)
     when 'today'
       return TodayCommand.new(input)
     when 'add'

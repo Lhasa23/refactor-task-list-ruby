@@ -35,13 +35,13 @@ describe 'application' do
 
   it 'works' do
     Timeout::timeout 1 do
-      execute('show')
+      execute('view')
 
       execute('add project secrets')
       execute('add task secrets Eat more donuts.')
       execute('add task secrets Destroy all humans.')
 
-      execute('show')
+      execute('view')
       read_lines(
         'secrets',
         '  [ ] 1: Eat more donuts.',
@@ -66,7 +66,7 @@ describe 'application' do
       execute('check 5')
       execute('check 6')
 
-      execute('show')
+      execute('view')
       read_lines(
         'secrets',
         '  [x] 1: Eat more donuts.',
@@ -136,7 +136,7 @@ describe 'application' do
       execute('add project secrets')
       execute('add task secrets Eat more donuts.')
       execute('add task secrets Destroy all humans.')
-      execute('show')
+      execute('view')
       read_lines(
         'secrets',
         '  [ ] 1: Eat more donuts.',
@@ -145,7 +145,7 @@ describe 'application' do
       )
 
       execute('delete 1')
-      execute('show')
+      execute('view')
       read_lines(
         'secrets',
         '  [ ] 2: Destroy all humans.',
@@ -154,6 +154,39 @@ describe 'application' do
       execute('delete 3')
       read_lines(
         "Could not find a task with an ID of 3.",
+        ''
+      )
+
+      execute('quit')
+    end
+  end
+
+  it 'view by deadline' do
+    Timeout::timeout 1 do
+      execute('add project secrets')
+      execute('add task secrets Eat more donuts.')
+      execute('add task secrets Destroy all humans.')
+      execute('add task secrets Destroy all plants.')
+      execute('add task secrets Kill Dach.')
+
+      execute('deadline 1 2022-10-08')
+      execute('deadline 2 2022-10-09')
+      execute("deadline 3 2022-10-07")
+      execute("deadline 4 2022-10-06")
+
+      execute('view by deadline')
+      read_lines(
+        '2022-10-06',
+        '  [ ] 4: Kill Dach.',
+        '',
+        '2022-10-07',
+        '  [ ] 3: Destroy all plants.',
+        '',
+        '2022-10-08',
+        '  [ ] 1: Eat more donuts.',
+        '',
+        '2022-10-09',
+        '  [ ] 2: Destroy all humans.',
         ''
       )
 

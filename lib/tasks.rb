@@ -14,6 +14,23 @@ class Tasks
     show_arr.join("\n\n")
   end
 
+  def show_by_deadline
+    task_arr = []
+    @tasks.each do |project_name, project_tasks|
+      task_arr << project_tasks
+    end
+    new_tasks_group = {}
+    task_arr.flatten.sort { |a, b| a.deadline <=> b.deadline }.each do |task|
+      new_tasks_group[task.deadline] = (new_tasks_group[task.deadline] || []) << task
+    end
+
+    show_arr = []
+    new_tasks_group.each do |deadline, tasks|
+      show_arr << tasks.reduce([deadline]) { |result, task| result << "  #{task.task_item_string}" }.join("\n")
+    end
+    show_arr.join("\n\n")
+  end
+
   def add_project!(name)
     @tasks[name] = []
   end
@@ -28,7 +45,7 @@ class Tasks
 
   def find_task_by_id(id_string)
     id = id_string.to_i
-    @tasks.collect { |project_name, project_tasks|
+    @tasks.map { |project_name, project_tasks|
       project_tasks.find { |t| t.id == id }
     }.reject(&:nil?).first
   end
